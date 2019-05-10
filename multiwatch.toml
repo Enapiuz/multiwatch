@@ -1,0 +1,11 @@
+delay=500
+
+[[watch]]
+name = "linter"
+paths = ["vendor/github.com"]
+commands = ["sleep 1", "sleep 1", "ls /sfsdfsdf"]
+
+[[watch]]
+name = "tests"
+paths = ["vendor/golang.org"]
+commands = ["sleep 5"]

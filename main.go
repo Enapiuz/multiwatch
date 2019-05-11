@@ -27,13 +27,10 @@ func main() {
 		log.Fatal(err)
 	}
 	for _, watchConfig := range config.Watch {
-		log.Printf("%v", watchConfig)
 		dirWatcher := watcher.NewWatcher(watchConfig.Name, watchConfig.Paths, watchConfig.Commands)
 		dirWatcher.Run(needReprint)
 		watchers = append(watchers, dirWatcher)
 	}
-
-	log.Printf("%d", len(watchers))
 
 	var statusPrinter = printer.NewPrinter()
 	statusPrinter.RegisterWatchers(watchers)

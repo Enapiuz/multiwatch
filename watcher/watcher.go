@@ -21,15 +21,17 @@ type Watcher struct {
 func NewWatcher(name string, dirs []string, commands []string) *Watcher {
 	watcher, _ := fsnotify.NewWatcher()
 	for _, dir := range dirs {
+		if _, err := os.Stat(dir); os.IsNotExist(err) {
+			log.Fatalf("Directory '%s' in '%s' watcher does not exists", dir, name)
+		}
 		if err := filepath.Walk(dir, watchDir(watcher)); err != nil {
-			fmt.Println("ERROR", err)
+			log.Fatal("ERROR", err)
 		}
 	}
 	return &Watcher{watcher: watcher, commands: commands, name: name, status: "⚪"}
 }
 
 func (w *Watcher) Run(needReprint chan bool) {
-	log.Printf("watcher %s has been started", w.name)
 	go func() {
 		f := func() {
 			w.status = "🔄"

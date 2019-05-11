@@ -13,3 +13,5 @@
 
 # Releases directory
 /release
+
+/coverage.txt

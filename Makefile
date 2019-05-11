@@ -8,3 +8,6 @@ build:
 	zip release/linux.zip release/linux/multiwatch
 	GOOS=windows go build -o release/windows/multiwatch.exe
 	zip release/windows.zip release/windows/multiwatch.exe
+
+test:
+	go test -race -coverprofile=coverage.txt -covermode=atomic -v ./...

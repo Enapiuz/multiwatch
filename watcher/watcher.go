@@ -25,7 +25,7 @@ func NewWatcher(name string, dirs []string, commands []string) *Watcher {
 			fmt.Println("ERROR", err)
 		}
 	}
-	return &Watcher{watcher: watcher, commands: commands, name: name, status: "⚪️"}
+	return &Watcher{watcher: watcher, commands: commands, name: name, status: "⚪"}
 }
 
 func (w *Watcher) Run(needReprint chan bool) {

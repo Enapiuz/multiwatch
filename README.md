@@ -17,11 +17,14 @@ Simple task runner on directory changes.
     - `cd multiwatch && go install`
     
 ### Distros
-Work In Progress
+#### macOS
+`brew install Enapiuz/tap/multiwatch`
+#### Other systems
+Work in progress
 
 ## Config
 ```toml
-# debounce time for file change events
+# debounce time for file change events in mulliseconds
 delay=500
 
 [[watch]]

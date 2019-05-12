@@ -2,33 +2,33 @@ package watcher
 
 import (
 	"fmt"
-	"github.com/bep/debounce"
-	"github.com/fsnotify/fsnotify"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"time"
+
+	"github.com/Enapiuz/multiwatch/types"
+	"github.com/bep/debounce"
+	"github.com/fsnotify/fsnotify"
 )
 
 type Watcher struct {
-	name     string
-	watcher  *fsnotify.Watcher
-	commands []string
-	status   string
+	config  *types.DirectoryConfig
+	watcher *fsnotify.Watcher
+	status  string
 }
 
-func NewWatcher(name string, dirs []string, commands []string) *Watcher {
+func NewWatcher(config types.DirectoryConfig) *Watcher {
 	watcher, _ := fsnotify.NewWatcher()
-	for _, dir := range dirs {
-		if _, err := os.Stat(dir); os.IsNotExist(err) {
-			log.Fatalf("Directory '%s' in '%s' watcher does not exists", dir, name)
-		}
-		if err := filepath.Walk(dir, watchDir(watcher)); err != nil {
-			log.Fatal("ERROR", err)
-		}
+	newWatcher := &Watcher{
+		status:  "⚪",
+		config:  &config,
+		watcher: watcher,
 	}
-	return &Watcher{watcher: watcher, commands: commands, name: name, status: "⚪"}
+	newWatcher.registerFiles()
+	return newWatcher
 }
 
 func (w *Watcher) Run(needReprint chan bool) {
@@ -62,7 +62,7 @@ func (w *Watcher) Run(needReprint chan bool) {
 
 func (w *Watcher) runCommands() bool {
 	result := true
-	for _, command := range w.commands {
+	for _, command := range w.config.Commands {
 		cmd := exec.Command("sh", "-c", command)
 		err := cmd.Run()
 		if err != nil {
@@ -73,16 +73,34 @@ func (w *Watcher) runCommands() bool {
 }
 
 func (w *Watcher) GetStatus() string {
-	//return w.name
-	return fmt.Sprintf("%s %s", w.status, w.name)
+	return fmt.Sprintf("%s %s", w.status, w.config.Name)
 }
 
-func watchDir(watcher *fsnotify.Watcher) func(path string, fi os.FileInfo, err error) error {
-	return func(path string, fi os.FileInfo, err error) error {
-		if fi.Mode().IsDir() {
-			return watcher.Add(path)
+func (w *Watcher) registerFiles() error {
+	for _, dir := range w.config.Paths {
+		if _, err := os.Stat(dir); os.IsNotExist(err) {
+			log.Fatalf("Directory '%s' in '%s' watcher does not exists", dir, w.config.Name)
 		}
 
+		if err := filepath.Walk(dir, w.watchDir(dir)); err != nil {
+			log.Fatal("ERROR: ", err)
+		}
+	}
+	return nil
+}
+
+func (w *Watcher) watchDir(baseDir string) func(path string, fi os.FileInfo, err error) error {
+	return func(path string, fi os.FileInfo, err error) error {
+		if fi.Mode().IsDir() {
+			// check ignore prefixes
+			for _, ignorePrefix := range w.config.IgnorePrefixes {
+				targetPath := fmt.Sprintf("%s/%s", baseDir, ignorePrefix)
+				if strings.HasPrefix(path, targetPath) {
+					return nil
+				}
+			}
+			return w.watcher.Add(path)
+		}
 		return nil
 	}
 }

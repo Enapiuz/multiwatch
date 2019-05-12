@@ -35,5 +35,6 @@ commands = ["npm run lint"]
 [[watch]]
 name = "tests"
 paths = ["src", "tests"]
+ignorePrefixes=["vendor"] # ignore "src/vendor/*" and "tests/vendor/*" 
 commands = ["npm run test"]
 ```

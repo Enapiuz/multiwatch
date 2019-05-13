@@ -8,7 +8,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Enapiuz/multiwatch/blob/master/LICENSE)
 
 Simple task runner on directory changes.
-<p align="center"><img src="https://github.com/Enapiuz/multiwatch/blob/master/docs/screenshot.png"></p>
+[![asciicast](https://asciinema.org/a/245987.svg)](https://asciinema.org/a/245987)
 
 ## Installation
 ### Manual

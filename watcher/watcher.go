@@ -1,6 +1,7 @@
 package watcher
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -14,23 +15,35 @@ import (
 	"github.com/fsnotify/fsnotify"
 )
 
-type Watcher struct {
-	config  *types.DirectoryConfig
-	watcher *fsnotify.Watcher
-	status  string
+// Interface Watcher interface
+type Interface interface {
+	Run(chan bool)
+	GetStatus() string
+	GetErrors() string
 }
 
+// Watcher watch for directory changes and run commands
+type Watcher struct {
+	config   *types.DirectoryConfig
+	watcher  *fsnotify.Watcher
+	status   string
+	errorLog string
+}
+
+//NewWatcher creates new watcher
 func NewWatcher(config types.DirectoryConfig) *Watcher {
 	watcher, _ := fsnotify.NewWatcher()
 	newWatcher := &Watcher{
-		status:  "⚪",
-		config:  &config,
-		watcher: watcher,
+		status:   "⚪",
+		config:   &config,
+		watcher:  watcher,
+		errorLog: "",
 	}
 	newWatcher.registerFiles()
 	return newWatcher
 }
 
+// Run watcher
 func (w *Watcher) Run(needReprint chan bool) {
 	go func() {
 		f := func() {
@@ -49,8 +62,10 @@ func (w *Watcher) Run(needReprint chan bool) {
 		for {
 			select {
 			// watch for events
-			case _ = <-w.watcher.Events:
-				debounced(f)
+			case event := <-w.watcher.Events:
+				if event.Op.String() != "CHMOD" {
+					debounced(f)
+				}
 
 			// watch for errors
 			case err := <-w.watcher.Errors:
@@ -62,18 +77,29 @@ func (w *Watcher) Run(needReprint chan bool) {
 
 func (w *Watcher) runCommands() bool {
 	result := true
+	w.errorLog = ""
 	for _, command := range w.config.Commands {
+		var outBuffer, errBuffer bytes.Buffer
 		cmd := exec.Command("sh", "-c", command)
+		cmd.Stdout = &outBuffer
+		cmd.Stderr = &errBuffer
 		err := cmd.Run()
 		if err != nil {
+			w.errorLog += fmt.Sprintf("[%s]:\n%s%s", command, outBuffer.String(), errBuffer.String())
 			result = false
 		}
 	}
 	return result
 }
 
+// GetStatus returns text representation of current watcher's status
 func (w *Watcher) GetStatus() string {
 	return fmt.Sprintf("%s %s", w.status, w.config.Name)
+}
+
+// GetErrors returns errors from last watcher run
+func (w *Watcher) GetErrors() string {
+	return w.errorLog
 }
 
 func (w *Watcher) registerFiles() error {

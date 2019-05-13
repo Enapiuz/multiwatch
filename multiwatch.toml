@@ -1,12 +1,27 @@
 delay=500
 
 [[watch]]
-name = "linter"
-paths = ["vendor/github.com"]
-commands = ["sleep 1", "sleep 1", "ls /sfsdfsdf"]
+name = "tests"
+paths = ["printer", "watcher", "types"]
+commands = ["make test"]
 
 [[watch]]
-name = "tests"
-paths = ["."]
+name = "vet"
+paths = ["printer", "watcher", "types"]
+commands = ["make vet"]
+
+[[watch]]
+name = "lint"
+paths = ["printer", "watcher", "types"]
+commands = ["make lint"]
+
+[[watch]]
+name = "goimports"
+paths = ["printer", "watcher", "types"]
+commands = ["make imports"]
+
+[[watch]]
+name = "something"
+paths = ["vendor/github.com"]
 ignorePrefixes = ["vendor"]
-commands = ["sleep 5"]
+commands = ["sleep 1", "sleep 1", "ls /sfsdfsdf"]

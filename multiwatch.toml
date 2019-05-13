@@ -7,6 +7,6 @@ commands = ["sleep 1", "sleep 1", "ls /sfsdfsdf"]
 
 [[watch]]
 name = "tests"
-paths = ["vendor/github.com"]
-ignorePrefixes = ["fsnotify"]
+paths = ["."]
+ignorePrefixes = ["vendor"]
 commands = ["sleep 5"]

@@ -92,14 +92,25 @@ func (w *Watcher) registerFiles() error {
 func (w *Watcher) watchDir(baseDir string) func(path string, fi os.FileInfo, err error) error {
 	return func(path string, fi os.FileInfo, err error) error {
 		if fi.Mode().IsDir() {
+			// check absolute path
+			absPath, err := filepath.Abs(path)
+			if err != nil {
+				return err
+			}
+
 			// check ignore prefixes
+			absBaseDir, err := filepath.Abs(baseDir)
+			if err != nil {
+				return err
+			}
+
 			for _, ignorePrefix := range w.config.IgnorePrefixes {
-				targetPath := fmt.Sprintf("%s/%s", baseDir, ignorePrefix)
-				if strings.HasPrefix(path, targetPath) {
+				targetPath := fmt.Sprintf("%s/%s", absBaseDir, ignorePrefix)
+				if strings.HasPrefix(absPath, targetPath) {
 					return nil
 				}
 			}
-			return w.watcher.Add(path)
+			return w.watcher.Add(absPath)
 		}
 		return nil
 	}

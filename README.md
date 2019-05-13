@@ -24,7 +24,7 @@ Work in progress
 
 ## Config
 ```toml
-# debounce time for file change events in mulliseconds
+# debounce time for file change events in milliseconds
 delay=500
 
 [[watch]]

@@ -2,12 +2,19 @@ package watcher
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/Enapiuz/multiwatch/types"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestWatcher_GetStatus(t *testing.T) {
-	watcher := NewWatcher("testwatcher", []string{"../watcher"}, []string{""})
+	conf := types.DirectoryConfig{
+		Name:     "testwatcher",
+		Paths:    []string{"../watcher"},
+		Commands: []string{""},
+	}
+	watcher := NewWatcher(conf)
 	status := watcher.GetStatus()
 	expected := fmt.Sprintf("%s %s", "⚪", "testwatcher")
 	assert.Equal(t, expected, status, "wrong default status")

@@ -7,5 +7,6 @@ commands = ["sleep 1", "sleep 1", "ls /sfsdfsdf"]
 
 [[watch]]
 name = "tests"
-paths = ["vendor/golang.org"]
+paths = ["."]
+ignorePrefixes = ["vendor"]
 commands = ["sleep 5"]

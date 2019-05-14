@@ -24,4 +24,5 @@ commands = ["make imports"]
 name = "something"
 paths = ["vendor/github.com"]
 ignorePrefixes = ["vendor"]
-commands = ["sleep 1", "sleep 1", "ls /sfsdfsdf"]
+commands = ["sleep 1", "ls /1231231231", "sleep 1", "ls /sfsdfsdf"]
+breakOnFail = true

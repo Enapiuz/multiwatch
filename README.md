@@ -39,3 +39,8 @@ paths = ["src", "tests"]
 ignorePrefixes=["vendor"] # ignore "src/vendor/*" and "tests/vendor/*" 
 commands = ["npm run test"]
 ```
+
+## Donation
+If you enjoying this tool, feel free to buy me a coffee 😉
+
+<a href="https://www.buymeacoffee.com/enapiuz" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>

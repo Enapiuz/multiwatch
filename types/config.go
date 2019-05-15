@@ -6,6 +6,7 @@ type DirectoryConfig struct {
 	Paths          []string
 	IgnorePrefixes []string
 	Commands       []string
+	BreakOnFail    bool
 }
 
 // Config Application config

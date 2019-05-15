@@ -87,6 +87,9 @@ func (w *Watcher) runCommands() bool {
 		if err != nil {
 			w.errorLog += fmt.Sprintf("[%s]:\n%s%s", command, outBuffer.String(), errBuffer.String())
 			result = false
+			if w.config.BreakOnFail {
+				break
+			}
 		}
 	}
 	return result

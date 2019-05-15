@@ -6,6 +6,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/61bf67df2cdf15e5262f/maintainability)](https://codeclimate.com/github/Enapiuz/multiwatch/maintainability)
 [![Open Source Helpers](https://www.codetriage.com/enapiuz/multiwatch/badges/users.svg)](https://www.codetriage.com/enapiuz/multiwatch)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Enapiuz/multiwatch/blob/master/LICENSE)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEnapiuz%2Fmultiwatch.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FEnapiuz%2Fmultiwatch?ref=badge_shield)
 
 Simple task runner on directory changes.
 [![asciicast](https://asciinema.org/a/245987.svg)](https://asciinema.org/a/245987)
@@ -45,3 +46,7 @@ breakOnFail = true # if tests will fail, build won't be run
 If you are enjoying this tool, feel free to buy me a coffee 😉
 
 <a href="https://www.buymeacoffee.com/enapiuz" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEnapiuz%2Fmultiwatch.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FEnapiuz%2Fmultiwatch?ref=badge_large)

@@ -37,10 +37,11 @@ commands = ["npm run lint"]
 name = "tests"
 paths = ["src", "tests"]
 ignorePrefixes=["vendor"] # ignore "src/vendor/*" and "tests/vendor/*" 
-commands = ["npm run test"]
+commands = ["npm run test", "npm run build"]
+breakOnFail = true # if tests will fail, build won't be run
 ```
 
 ## Donation
-If you enjoying this tool, feel free to buy me a coffee 😉
+If you are enjoying this tool, feel free to buy me a coffee 😉
 
 <a href="https://www.buymeacoffee.com/enapiuz" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
